@@ -2,6 +2,12 @@
 
 #define BUF_SIZE 512
 
+/**************************************************************
+ * socket client
+ * socket write
+ * write: 64*32 matrix
+***************************************************************/
+
 void error_handling(char *message)
 {
     fputs(message,stderr);

@@ -3,6 +3,13 @@
 
 #define BUF_SIZE 512
 
+/**************************************************************
+ * socket client
+ * socket read & write
+ * read: hp, cooltime
+ * write: sensor data
+***************************************************************/
+
 void error_handling(char *message)
 {
     fputs(message,stderr);

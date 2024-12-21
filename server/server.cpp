@@ -3,6 +3,13 @@
 
 char pmp[64][32];
 
+/**************************************************************
+ * socket server
+ * socket read & write
+ * read: sensor data
+ * write: hp, cooltime
+***************************************************************/
+
 void *t_function_disp(void *data) {
     int client_fd = *((int *)data);
     free(data); // 동적으로 할당한 메모리 해제

@@ -4,6 +4,13 @@
 
 #define BUF_SIZE 512
 
+/**************************************************************
+ * socket client
+ * socket read & write
+ * read: hp, cooltime
+ * write: sensor data
+***************************************************************/
+
 void error_handling(char *message)
 {
     fputs(message,stderr);
@@ -12,7 +19,7 @@ void error_handling(char *message)
 }
 
 pthread_t ttid;
-int indata[3]; // 0: haptic, 1~4: display 값들
+int indata[3]; // 0: haptic, 1~2: cooltime
 
 void *t_function_w(void *data) {
     int sock_fd = *((int *)data);
