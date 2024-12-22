@@ -17,4 +17,4 @@ void *t_function_play(void *data);
 void *t_function_disp(void *data);
 void *t_function_main(void *data);
 
-#endif //SERVER_H
+#endif

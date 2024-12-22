@@ -1,4 +1,3 @@
-//client.c
 #include "client.h"
 #include <wiringPi.h>
 
@@ -19,11 +18,11 @@ void error_handling(char *message)
 }
 
 pthread_t ttid;
-int indata[3]; // 0: haptic, 1~2: cooltime
+int indata[3];
 
 void *t_function_w(void *data) {
     int sock_fd = *((int *)data);
-    free(data); // 동적으로 할당한 메모리 해제
+    free(data);
 
     while (true) {
         ssize_t n = read(sock_fd, indata, sizeof(indata));
@@ -34,14 +33,14 @@ void *t_function_w(void *data) {
 
 int sock_init(char *ip, int port) {
     struct sockaddr_in serv_addr;
-    int *sock = (int *)malloc(sizeof(int)); // 동적으로 소켓 메모리 할당
+    int *sock = (int *)malloc(sizeof(int));
 
     if (sock == NULL) {
         fprintf(stderr, "[Client]: Memory allocation failed\n");
         return -1;
     }
 
-    *sock = socket(PF_INET, SOCK_STREAM, 0); // 소켓 생성
+    *sock = socket(PF_INET, SOCK_STREAM, 0);
     if (*sock == -1) {
         free(sock);
         error_handling("[Client]: socket() error");
@@ -61,7 +60,6 @@ int sock_init(char *ip, int port) {
 
     printf("[Client]: Connected to server at %s:%d\n", ip, port);
 
-    // 읽기 스레드 생성
     int thr_id = pthread_create(&ttid, NULL, t_function_w, sock);
     if (thr_id != 0) {
         perror("[Client]: Thread creation failed");
@@ -70,5 +68,5 @@ int sock_init(char *ip, int port) {
         return -1;
     }
 
-    return *sock; // 생성된 소켓 파일 디스크립터 반환
+    return *sock;
 }

@@ -1,6 +1,5 @@
 #include "server.h"
 #include "led-matrix.h"
-
 #include <random>
 #include <signal.h>
 #include <unistd.h>
@@ -10,6 +9,12 @@
 #include <future>
 
 #define BUF_SIZE 512
+
+/**************************************************************
+ * galaga.cc for LED PI
+ * Server to Led: 64x32 Matrix
+ * Display 64x32 Matrix to LED by "led-matrix.h" Library
+***************************************************************/
 
 using rgb_matrix::Canvas;
 using rgb_matrix::RGBMatrix;
@@ -30,6 +35,40 @@ uniform_int_distribution<int> dis(0, 255);
 
 char mp[64][32];
 
+void set_random_red(int i, int j){
+    int k = dis(gen) % 3;
+    switch(k){
+        case 0:  canvas->SetPixel(i, j, 0x00, 0xFF, 0x00);
+        break;
+        case 1: canvas->SetPixel(i, j, 0x00, 0xFF, 0x7F);
+        break;
+        case 2: canvas->SetPixel(i, j, 0x46, 0x82, 0xB4);
+        break;
+        case 3: canvas->SetPixel(i, j, 0x7B, 0x68, 0xEE);
+        break;
+        case 4:
+            canvas->SetPixel(i, j, 0x94, 0x00, 0xD3);
+        break;
+    }
+
+}
+
+void set_random_blue(int i, int j){
+    int k = dis(gen) % 3;
+    switch(k){
+        case 0:  canvas->SetPixel(i, j, 0xFF, 0x69, 0xB4); break;
+        case 1: canvas->SetPixel(i, j, 0xFF,0xFF,0x00);
+        break;
+        case 2: canvas->SetPixel(i, j, 0xFF,0x69,0xB4);
+        break;
+        case 3: canvas->SetPixel(i, j, 0x8B,0x00,0x00);
+        break;
+        case 4:
+        canvas->SetPixel(i, j, 0xBA, 0x55, 0xD3);
+        break;
+    }
+}
+
 void LED_Print(){
     for (int i = 0; i < 64; i++)
     {
@@ -43,39 +82,44 @@ void LED_Print(){
                     canvas->SetPixel(i, j, 0, 0, 0);
                     break;
 
-                case 6:
-                    canvas->SetPixel(i, j, 255, 55, 55);
-                    break;
-                case 7:
-                    canvas->SetPixel(i, j, 255, 102, 102);
-                    break;
-                case 8:
-                    canvas->SetPixel(i, j, 255, 0, 0);
-                    break;
-                case 9:
-                    canvas->SetPixel(i, j, 255, 0, 0);
-                    break;
-                case 10:
-                    canvas->SetPixel(i, j, 0, 255, 0);
-                    break;
                 case 11:
-                    canvas->SetPixel(i, j, 55, 255, 55);
+                    canvas->SetPixel(i, j, 0xFF,0x8C, 0x00);
                     break;
                 case 12:
-                    canvas->SetPixel(i, j, 102, 255, 102);
+                    canvas->SetPixel(i, j, 0xDC,0x14,0x3C);
                     break;
                 case 13:
-                    canvas->SetPixel(i, j, 0, 255, 0);
+                    canvas->SetPixel(i, j, 255, 0, 0);
                     break;
                 case 14:
-                    canvas->SetPixel(i, j, 0, 255, 0);
+                    canvas->SetPixel(i, j, 255, 0, 0);
                     break;
                 case 15:
+                    set_random_red(i, j);
+                    break;
+
+
+                case 21:
+                    canvas->SetPixel(i, j, 0x00, 0xFF, 0xFF);
+                    break;
+                case 22:
+                    canvas->SetPixel(i, j, 0x00, 0xBF, 0xFF);
+                    break;
+                case 23:
+                     canvas->SetPixel(i, j, 0, 255, 0);
+                    break;
+                case 24:
                     canvas->SetPixel(i, j, 0, 255, 0);
                     break;
+                case 25:
+                   set_random_blue(i, j);
+                    break;
+
+                
                 case 30:
                     canvas->SetPixel(i, j, dis(gen), dis(gen), dis(gen));
                     break;
+
                 default:
                     break;
                 }

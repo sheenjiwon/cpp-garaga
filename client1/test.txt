@@ -1,1 +1,0 @@
-gcc -o lcd lcd.cpp -lwiringPi -lwiringPiDev

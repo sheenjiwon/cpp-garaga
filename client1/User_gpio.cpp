@@ -19,14 +19,19 @@ uint16_t DELAY = 0;
 #define DIRECTION_MAX1 256
 #define BUFFER_MAX 3
 
-int GPIOExport(int pin) {
-  /* GPIO Activate
-  * IN: pin
-  * 핀 번호를 export 파일에 쓰기.
-  * 실패시 -1 반환
-  * 성공시 0 반환
-  */
+/**************************************************************
+ * GPIO Export
+ * GPIO Unexport
+ * GPIO Direction
+ * GPIO Read
+ * GPIO Write
+ * PWM Export
+ * PWM Enable
+ * PWM Write Period
+ * PWM Write Dutycycle
+***************************************************************/
 
+int GPIOExport(int pin) {
   char buffer[BUFFER_MAX];
   ssize_t bytes_written;
   int fd;
@@ -44,13 +49,6 @@ int GPIOExport(int pin) {
 }
 
 int GPIOUnexport(int pin) {
-  /* GPIO Inactivate
-  * IN: pin
-  * 핀 번호를 unexport 파일에 쓰기.
-  * 실패시 -1 반환
-  * 성공시 0 반환
-  */
-
   char buffer[BUFFER_MAX];
   ssize_t bytes_written;
   int fd;
@@ -68,12 +66,6 @@ int GPIOUnexport(int pin) {
 }
 
 int GPIODirection(int pin, int dir) {
-  /* GPIO I/O driection 설정
-  * IN: pin, direction
-  * 핀 번호와 방향을 direction 파일에 쓰기.
-  * 실패시 -1 반환
-  * 성공시 0 반환
-  */
   static const char s_directions_str[] = "in\0out";
 
   char path[DIRECTION_MAX];
@@ -96,13 +88,6 @@ int GPIODirection(int pin, int dir) {
 }
 
 int GPIORead(int pin) {
-  /* GPIO Read
-  * IN: pin
-  * value 파일에서 값을 읽어온다
-  * 실패시 -1 반환
-  * 성공시 읽은 값 반환
-  */
-
   char path[VALUE_MAX];
   char value_str[3];
   int fd;
@@ -125,12 +110,6 @@ int GPIORead(int pin) {
 }
 
 int GPIOWrite(int pin, int value) {
-  /* GPIO Write
-  * IN: pin, value
-  * value 파일에 값을 쓴다
-  * 실패시 -1 반환
-  * 성공시 0 반환
-  */
   static const char s_values_str[] = "01";
 
   char path[VALUE_MAX];
@@ -177,12 +156,11 @@ int prepare(int fd) {
 }
 
 uint8_t control_bits_differential(uint8_t channel) {
-  /* 채널 유효성 보장 (0~7): 하위 3비트를 4~6 비트에 위치 시킴, 4~6 비트가 채널 의미*/
   return (channel + 8) << 4;
 }
 
 uint8_t control_bits(uint8_t channel) {
-  /* MCP3008의 Single-ended mode로 데이터를 읽기 위한 control bit 생성*/
+
   return 0x8 | control_bits_differential(channel);
 }
 
@@ -252,7 +230,6 @@ int PWMWritePeriod(int pwmnum, int value) {
   char path[VALUE_MAX1];
   int fd, byte;
 
-  // TODO: Enter the period path.
   snprintf(path, VALUE_MAX1, "/sys/class/pwm/pwmchip0/pwm%d/period", pwmnum);
   fd = open(path, O_WRONLY);
   if (-1 == fd) {
@@ -276,7 +253,6 @@ int PWMWriteDutyCycle(int pwmnum, int value) {
   char path[VALUE_MAX1];
   int fd, byte;
 
-  // TODO: Enter the duty_cycle path.
   snprintf(path, VALUE_MAX1, "/sys/class/pwm/pwmchip0/pwm%d/duty_cycle", pwmnum);
   fd = open(path, O_WRONLY);
   if (-1 == fd) {

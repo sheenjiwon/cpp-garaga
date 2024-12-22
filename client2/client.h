@@ -1,7 +1,3 @@
-//
-// Created by Jiwon Sheen on 2024-12-06
-//
-
 #ifndef CLIENT_H
 #define CLIENT_H
 
@@ -20,4 +16,4 @@ void error_handling(char *message);
 int sock_init(char *ip, int port);
 void *t_function_w(void *data);
 
-#endif //CLIENT_H
+#endif

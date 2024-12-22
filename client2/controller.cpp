@@ -6,13 +6,18 @@
 #include <stdlib.h>
 #include <string.h>
 
+/**************************************************************
+ * controller.cpp for User PI 2
+ * User to Server: Joystick, Button
+ * Server to User: LCD w/o I2C display, Haptic
+***************************************************************/
 
-#define LCD_RS  29               //Register select pin
-#define LCD_E   6               //Enable Pin
-#define LCD_D4  27               //Data pin 4
-#define LCD_D5  26               //Data pin 5
-#define LCD_D6  11               //Data pin 6
-#define LCD_D7  31               //Data pin 7        
+#define LCD_RS  29 // Register select pin
+#define LCD_E   6  // Enable Pin
+#define LCD_D4  27 // Data pin 4
+#define LCD_D5  26 // Data pin 5
+#define LCD_D6  11 // Data pin 6
+#define LCD_D7  31 // Data pin 7        
 
 #define USER 2
 #define PIN 20
@@ -26,11 +31,7 @@ int sock;
 char IP[30] = "192.168.1.7";
 int port;
 int Button[2];
-int Joy[2]; //u=0, r=2,l=3
-
-/*
-***********************************************************
-*/
+int Joy[2];
 
 int main(int argc, char **argv) {
 

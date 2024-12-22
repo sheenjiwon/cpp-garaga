@@ -12,7 +12,7 @@ char pmp[64][32];
 
 void *t_function_disp(void *data) {
     int client_fd = *((int *)data);
-    free(data); // 동적으로 할당한 메모리 해제
+    free(data);
 
     while (true) {
         ssize_t sz = recv(client_fd, pmp, sizeof(pmp), 0);
@@ -25,7 +25,7 @@ int indata[6] = {-1, -1, -1, -1, -1, -1};
 
 void *t_function_play(void *data) {
     int client_fd = *((int *)data);
-    free(data); // 동적으로 할당한 메모리 해제
+    free(data);
 
     int buffer[2] = {};
 
@@ -37,18 +37,18 @@ void *t_function_play(void *data) {
 }
 
 void *t_function_main(void *data) {
-    int server_fd; // server의 file descriptor
-    struct sockaddr_in server_addr; // server 정보를 담는 struct
+    int server_fd;
+    struct sockaddr_in server_addr;\
 
-    if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) == -1) { // server에서 socket 구축, 오류 시, stderr에 오류 메시지 출력 후 종료
+    if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) == -1) {
         fprintf(stderr, "[Server]: Can't open stream socket\n");
         exit(1);
     }
 
-    memset(&server_addr, 0x00, sizeof(server_addr)); // server_addr을 초기화
+    memset(&server_addr, 0x00, sizeof(server_addr));
 
-    server_addr.sin_family = AF_INET; // UDP, TCP를 위한 소켓 세팅
-    server_addr.sin_addr.s_addr = htonl(INADDR_ANY); //
+    server_addr.sin_family = AF_INET;
+    server_addr.sin_addr.s_addr = htonl(INADDR_ANY);
     server_addr.sin_port = htons(9000);
 
     if (bind(server_fd, (struct sockaddr *)&server_addr, sizeof(server_addr)) < 0) {
@@ -110,19 +110,8 @@ void *t_function_main(void *data) {
             close(*client_fd);
             free(client_fd);
         }
-        pthread_detach(tid); // 스레드 독립 실행
+        pthread_detach(tid);
     }
 
     close(server_fd);
 }
-#if 0
-int main(int argc, char *argv[]) {
-    int option = 1, option2 = 1;
-    pthread_t tid, tid2;
-    int thr_id = pthread_create(&tid, NULL, t_function_main, &option);
-
-    pthread_join(tid, NULL);
-
-    return 0;
-}
-#endif

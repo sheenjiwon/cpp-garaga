@@ -7,7 +7,6 @@
 #include <vector>
 #include <random>
 #include <algorithm>
-
 #include <chrono>
 #include <thread>
 #include <cmath>
@@ -15,12 +14,10 @@
 #include <termios.h>
 #include <unistd.h>
 #include <fcntl.h>
-
 #include <stdlib.h>
 #include <string.h>
 #include <sys/select.h>
 #include "client.h"
-#include "keyboard.h"
 #include "server.h"
 
 static struct termios initial_settings, new_settings;
@@ -32,27 +29,22 @@ static int peek_character = -1;
 using namespace std;
 using namespace chrono;
 
-random_device rd;
-mt19937 gen(rd());
-uniform_int_distribution<int> dis(0, 255);
-
 #define INF 1e9
-int push = 0, push_size = 5;
-char back[SIZER][SIZEC];
 
-volatile bool interrupt_received = false;
-static void InterruptHandler(int signo)
-{
-    interrupt_received = true;
-}
+/**************************************************************
+ * Galaga game서버
+ * 게임의 오브젝트, 게임 로직, 플레이어 입력을 처리하고 Display, player파이로 각 정보를 전송한다.
+ ***************************************************************/
 
-// 색 처리 수정 필요
+char back[SIZER][SIZEC];    //game map을 저장하는 64x32배열
+
 int sock;
 char IP[30] = "192.168.1.3";
 int port;
 int p1[3];
 int p2[3];
 
+int push = 0, push_size = 5;    
 class Map
 {
 public:
@@ -194,28 +186,6 @@ public:
     void draw()
     {
         back[y][x] = tag * 10 + 3;
-    }
-};
-
-class Type1 : public Bullet
-{
-public:
-    Type1(int x, int y, int dx = 0, int dy = 0, int damage = 1)
-    {
-        Bullet(x, y, dx, dy, damage);
-    }
-    bool move()
-    {
-        cycle++;
-        if (cycle < movingCycle)
-            return 1;
-        cycle = 0;
-        x += dx, y += dy;
-
-        if (x < 1 || x > SIZEC - 2)
-            dx = -dx;
-
-        return y < SIZER - 1 && y > 0;
     }
 };
 
@@ -857,8 +827,6 @@ int main(int argc, char *argv[])
 
     port = 9000;
     sock = sock_init(IP, port);
-    init_keyboard();
-
     gm.start();
 
     pthread_join(tid, NULL);

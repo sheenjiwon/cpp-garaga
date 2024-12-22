@@ -2,9 +2,9 @@
 #include "client.h"
 #include <wiringPi.h> 
 
-#define USER 1
+#define USER 1 // User PI 1
 #define PIN 20 // Button
-#define THRESHOLD 100
+#define THRESHOLD 100 // for joystick controll
 #define IN 0
 #define OUT 1
 
@@ -19,11 +19,13 @@ int sock;
 char IP[30] = "192.168.1.7";
 int port;
 int Button[2];
-int Joy[2]; //u=0, r=2,l=3
+int Joy[2];
 
-/*
-***********************************************************
-*/
+/**************************************************************
+ * controller.cpp for User PI 1
+ * User to Server: Joystick, Button
+ * Server to User: LED, Haptic
+***************************************************************/
 
 int main(int argc, char **argv) {
 

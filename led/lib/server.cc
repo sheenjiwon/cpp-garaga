@@ -5,12 +5,6 @@ char pmp[64][32];
 
 int clid;
 
-/**************************************************************
- * socket server
- * socket read
- * read 64*32 matrix from socket
-***************************************************************/
-
 void *t_function_disp(void *data) {
     int client_fd = *((int *)data);
     free(data); // 동적으로 할당한 메모리 해제
